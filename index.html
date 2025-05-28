@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GameZone - Aplikasi Game</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    overflow-x: hidden;
+    color: #fff;
+  }
+  
+  body::before {
+    content: '';
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background:
+      radial-gradient(2px 2px at 20% 10%, #fff, transparent),
+      radial-gradient(2px 2px at 40% 30%, #fff, transparent),
+      radial-gradient(2px 2px at 60% 70%, #fff, transparent),
+      radial-gradient(2px 2px at 80% 50%, #fff, transparent),
+      radial-gradient(2px 2px at 90% 80%, #fff, transparent);
+    background-repeat: repeat;
+    animation: star-move 30s linear infinite;
+    z-index: 0;
+  }
+  @keyframes star-move {
+    from {background-position: 0 0, 0 0, 0 0, 0 0, 0 0;}
+    to {background-position: 10000px 10000px, 5000px 6000px, 8000px 7000px, 6000px 9000px, 4000px 8000px;}
+  }
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 400px;
+    margin: 50px auto 80px;
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 15px;
+    padding: 30px 40px;
+    box-shadow: 0 0 25px 4px rgba(255, 165, 0, 0.5);
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 40px;
+    letter-spacing: 4px;
+    color: #ff9500;
+    text-shadow: 0 0 12px #ffb347;
+  }
+
+  
+  .tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 12px 0;
+    cursor: pointer;
+    font-weight: 600;
+    border: none;
+    background: transparent;
+    color: #ff9500;
+    font-size: 18px;
+    border-bottom: 3px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .tab-btn.active {
+    border-color: #ff9500;
+    font-size: 20px;
+  }
+
+  
+  form {
+    display: none;
+    flex-direction: column;
+  }
+  form.active {
+    display: flex;
+  }
+
+  label {
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  input, select {
+    padding: 10px 14px;
+    margin-bottom: 20px;
+    border-radius: 30px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+  }
+  input[type="text"], input[type="email"], input[type="password"], select {
+    background: #222;
+    color: #fff;
+  }
+  input::placeholder {
+    color: #bbb;
+  }
+
+  button.submit-btn {
+    background: #ff9500;
+    border: none;
+    padding: 15px;
+    border-radius: 30px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s;
+    box-shadow: 0 0 12px #ffb347;
+  }
+  button.submit-btn:hover {
+    background: #ffb347;
+  }
+
+  
+  .small-text {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #aaa;
+  }
+  .link-text {
+    color: #ff9500;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  
+  @media (max-width: 480px) {
+    .container {
+      margin: 20px 15px 60px;
+      padding: 20px 25px;
+    }
+    h1 {
+      font-size: 28px;
+    }
+    .tab-btn {
+      font-size: 16px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>GameZone<hr></h1>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="login">Login</button>
+    <button class="tab-btn" data-tab="register">Daftar</button>
+  </div>
+
+  
+  <form id="login" class="active">
+    <label for="login-username">Email</label>
+    <input type="text" id="login-username" placeholder="Masukkan email atau username" required />
+
+    <label for="login-password">Password</label>
+    <input type="password" id="login-password" placeholder="Masukkan password" required />
+
+    <button type="submit" class="submit-btn">Login</button>
+    <p class="small-text"><span class="link-text" onclick="alert('Fitur lupa password belum tersedia')">Lupa Password?</span></p>
+  </form>
+
+  
+  <form id="register">
+    <label for="reg-username">Username</label>
+    <input type="text" id="reg-username" placeholder="Masukkan username" required />
+
+    <label for="reg-email">Email</label>
+    <input type="email" id="reg-email" placeholder="Masukkan email" required />
+
+    <label for="reg-password">Password</label>
+    <input type="password" id="reg-password" placeholder="Masukkan password" required />
+
+    <label for="reg-password2">Konfirmasi Password</label>
+    <input type="password" id="reg-password2" placeholder="Konfirmasi password" required />
+
+    <button type="submit" class="submit-btn">Daftar</button>
+  </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const supabase = window.supabase.createClient(
+    'https://kbypmtqhxcvfqtsggndy.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtieXBtdHFoeGN2ZnF0c2dnbmR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgwMTQ0MzksImV4cCI6MjA2MzU5MDQzOX0.CChsDYoTN3OI36QmZNCBS_xKEmCjkUsFAonD8gN2Qj0'
+  );
+</script>
+<script>
+  
+  const tabs = document.querySelectorAll('.tab-btn');
+  const forms = document.querySelectorAll('form');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      forms.forEach(f => f.classList.remove('active'));
+
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+  });
+document.getElementById('login').addEventListener('submit', async e => {
+  e.preventDefault();
+  const email = document.getElementById('login-username').value;
+  const password = document.getElementById('login-password').value;
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error || !data.user) {
+    alert('Login gagal. Periksa kembali email dan password.');
+    return;
+  }
+
+  const uid = data.user.id;
+  localStorage.setItem('uid', uid);
+
+  const { data: userData, error: userError } = await supabase
+    .from('users_data')
+    .select('saldo')
+    .eq('user_id', uid)
+    .single();
+
+  if (userError) {
+    alert('Gagal mengambil data saldo');
+    return;
+  }
+
+  localStorage.setItem('saldo', userData.saldo);
+  alert(`Login berhasil! Saldo Anda: Rp${userData.saldo ?? 0}`);
+  window.location.href = 'profil.html';
+});
+
+document.getElementById('register').addEventListener('submit', async e => {
+  e.preventDefault();
+  const email = document.getElementById('reg-email').value;
+  const username = document.getElementById('reg-username').value;
+  const pw1 = document.getElementById('reg-password').value;
+  const pw2 = document.getElementById('reg-password2').value;
+
+  if (pw1 !== pw2) {
+    alert('Password tidak cocok!');
+    return;
+  }
+
+const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+  email,
+  password: pw1
+});
+
+if (signUpError) {
+  alert('Gagal daftar!');
+  return;
+}
+
+await supabase.from('users_data').insert({
+  user_id: signUpData.user.id,  // penting ini
+  username,
+  email,
+  saldo: 0
+});
+
+alert('Pendaftaran berhasil!');
+});
+
+</script>
+</body>
+</html>
+  
